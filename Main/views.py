@@ -38,6 +38,7 @@ def Main(request):
 	Template = get_template("Main/Base.html")
 	Session = session_check(request)
 	cu_test = '할렐루야'
+        cu_test2 = 'dfdfdfdfdf'
 	dic = {
 		'MID_Page' : 'Main/Main.html',
 		'cu_test' : cu_test,
