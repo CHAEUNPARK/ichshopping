@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ICH_Shopping</title>
+	<meta http-equiv="Content-Type" charset="utf-8" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta charset="utf-8">
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript">
+		function gohome(){
+			location.href="/";
+		}
+		$(document).ready(function(){
+			var topOffset = $('.top').offset();
+			var midOffset = $('.middle').offset();
+			$(window).scroll(function(){
+				if($(document).scrollTop()> topOffset.top){
+					$('.top').css('position','fixed');
+				}
+				else{
+					$('.top').css('position','relative');
+				}
+			});
+		});
+		if ('{{MID_Page}}'=='Main/Main.html')
+		{
+			function view(category){
+				if(category=='cate1'){
+					$('.cate2').css('display','none');
+					$('.cate3').css('display','none');
+					$('.cate4').css('display','none');
+					$('.cate1').css('display','block');
+					$('#un').css('border-bottom','3px solid orange');
+				}
+				else if (category=='cate2'){
+					$('.cate1').css('display','none');
+					$('.cate3').css('display','none');
+					$('.cate4').css('display','none');
+					$('.cate2').css('display','block');
+					$('#hui').css('border-bottom','3px solid orange');
+				}
+				else if (category=='cate3'){
+					$('.cate1').css('display','none');
+					$('.cate2').css('display','none');
+					$('.cate4').css('display','none');
+					$('.cate3').css('display','block');
+					$('#min').css('border-bottom','3px solid orange');
+				}
+				else if (category=='cate4'){
+					$('.cate1').css('display','none');
+					$('.cate2').css('display','none');
+					$('.cate3').css('display','none');
+					$('.cate4').css('display','block');
+					$('#uk').css('border-bottom','3px solid orange');
+				}
+			}
+		}
+		else{
+			function view(category){
+				if(category=='cate1'){
+					$('#un').css('border-bottom','3px solid orange');
+				}
+				else if (category=='cate2'){
+					$('#hui').css('border-bottom','3px solid orange');
+				}
+				else if (category=='cate3'){
+					$('#min').css('border-bottom','3px solid orange');
+				}
+				else if (category=='cate4'){
+					$('#uk').css('border-bottom','3px solid orange');
+				}
+			}
+		}
+		function mouseout(){
+			$('#un').css('border-bottom','');
+			$('#hui').css('border-bottom','');
+			$('#min').css('border-bottom','');
+			$('#uk').css('border-bottom','');
+		}
+	</script>
+	<style>
+		body{
+			margin:0px;
+			padding:0px;
+			font-size:10pt;
+		}
+		#wrap{
+			width:100%;
+			overflow:hidden;
+			margin:0 auto;
+		}
+		#wrap #blank{
+			height:100px;
+		}
+		.top{
+			padding-top:20px;
+			left:0;
+			width:100%;
+			height:100px;
+			border-bottom:1px solid #d2d2d2;
+			position:relative;
+			display:block;
+			z-index:100;
+			background-color:white;
+		}
+		/*.topFixed{
+			top:10px;
+			width:100%;
+			height:100px;
+			position:fixed;
+		}*/
+		.top_logo{
+			width:100%;
+			height:50%;
+		}
+		.top_left{
+			width: 25%;
+			height:100%;
+			float:left;
+		}
+		.top_middle{
+			width: 50%;
+			height:100%;
+			float:left;
+		}
+		.top_right{
+			width:25%;
+			height:100%;
+			float:left;
+		}
+		.logo{
+			width:100px;
+			height:100%;
+			margin:0 auto;
+			text-align:center;
+			background-image:url('/Static/7510.PNG');
+			background-size: contain;
+		}
+		.logo:hover{
+			cursor:pointer;
+		}
+		.user{
+			width: 100%;
+			height:100%;
+			float:right;
+			text-align:right;
+			padding-right:20px;
+		}
+		.user a{
+			color:black;
+			text-decoration: none;
+		}
+		.user a:visited{
+			color:black;
+			text-decoration: none;
+		}
+		.user a:hover{
+			text-decoration: underline;
+		}
+		.top_menu{
+			width:100%;
+			height:50%;
+		}
+		.top_cate{
+			width:50%;
+			height:100%;
+			margin: 0 auto;
+		}
+		.underline{
+			width:25%;
+			height:100%;
+			float:left;
+		}
+		#un, #hui, #min, #uk{
+			width:50%;
+			height:80%;
+			text-align:center;
+			line-height:3;
+			margin: 0 auto;
+		}
+		#un, #hui, #min, #uk:hover{
+			cursor:pointer;
+		}
+		.middle{
+			margin-top:10px;
+			width:100%;
+			float:left;
+			position:relative;
+		}
+
+		
+	</style>
+</head>
+ 
+<body>
+	<div id="wrap">
+		<div class="top">
+			<div class="top_logo">
+				<div class="top_left"></div>
+				<div class="top_middle">
+					<div class="logo" onclick="gohome();"></div>
+				</div>
+				<div class="top_right">
+					<div class="user">
+						{% if Session != -1 %}
+							{{Session.0}}/{{Session.1}}
+							<a href="/User/logout_process">로그아웃</a>
+						{% else %}
+							<a href ="/User/Signup">회원가입</a>
+							<a href="/User/Login">로그인</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<div id="blank" style="display:none;"></div>
+			<div class="top_menu">
+				<div class="top_cate">
+					<div class="underline">
+						<div id="un" onmouseover="view('cate1');" onmouseout="mouseout();">박채언</div>
+					</div>
+					<div class="underline">
+						<div id="hui" onmouseover="view('cate2');" onmouseout="mouseout();">김찬희</div>
+					</div>
+					<div class="underline">
+						<div id="min" onmouseover="view('cate3');" onmouseout="mouseout();">김유민</div>
+					</div>
+					<div class="underline">	
+						<div id="uk" onmouseover="view('cate4');" onmouseout="mouseout();">홍동욱</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="middle">
+			{% include MID_Page %}
+		</div>
+	</div>
+</body>
+</html>

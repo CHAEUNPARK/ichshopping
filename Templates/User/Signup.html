@@ -1,0 +1,197 @@
+<style>
+p {
+	display: inline-block;
+	width: 100%;
+}
+.wrap {
+	width: 900px;
+	margin: 0px auto;
+}
+
+.sign_table {
+	width: 600px;
+	margin: 0px auto;
+	margin-top: 50px;
+}
+
+.td_title {
+	border-right: 1px solid #ccc;
+	padding-right: 5px;
+}
+
+.td_content {
+	padding-left: 30px;
+	width: 80%;
+}
+
+#email1, #email2 {
+	width: 120px;
+}
+
+#phone1, #phone2, #phone3 {
+	width: 50px;
+}
+
+#address1, #address2 {
+	width: 300px;
+}
+
+.td_submit {
+	text-align: right;
+}
+
+</style>
+<div class="wrap">
+	<form action="/User/signup_process/" method="POST">
+	<table class="sign_table">
+		<tr>
+			<td class="td_title">아이디</td>
+			<td class="td_content">
+				<input type="text" id="id" name="id" />
+				<button type="button" onclick="id_check()">중복확인</button>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_title">비밀번호</td>
+			<td class="td_content">
+				<input type="password" id="pw" name="pw" onchange="pw_check()" />
+			</td>
+		</tr>
+		<tr>
+			<td class="td_title">비밀번호 확인</td>
+			<td class="td_content">
+				<input type="password" id="pw_check" name="pw_check" onchange="pw_check()" />
+			</td>
+			<td><span id="same"></span></td>
+		</tr>
+		<tr>
+			<td class="td_title">이름</td>
+			<td class="td_content">
+				<input type="text" id="name" name="name" />
+			</td>
+		</tr>
+		<tr>
+			<td class="td_title">E-mail</td>
+			<td class="td_content">
+				<input type="text" id="email1" name="email1" /> @ 
+				<input type="text" id="email2" name="email2" />
+			</td>
+		</tr>
+		<tr>
+			<td class="td_title">휴대전화</td>
+			<td class="td_content">
+				<input type="text" id="phone1" name="phone1" /> - 
+				<input type="text" id="phone2" name="phone2" /> - 
+				<input type="text" id="phone3" name="phone3" />
+			</td>
+		</tr>
+		<tr>
+			<td class="td_title">우편번호</td>
+			<td class="td_content">
+				<input type="text" id="zipcode" name="zipcode" />
+				<button type="button" onclick="fn_setAddr()">우편번호 찾기</button>
+			</td>
+		</tr>
+		<tr>
+			<td class="td_title">주소</td>
+			<td class="td_content">
+				<input type="text" id="address1" name="address1" />
+			</td>
+		</tr>
+		<tr>
+			<td class="td_title">상세주소</td>
+			<td class="td_content">
+				<input type="text" id="address2" name="address2" />
+			</td>
+		</tr>
+		<tr>
+			<td class="td_submit" colspan="5">
+				<input type="submit" value="완료"/>
+				<button type="button">취소</button>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+
+<!--다음 주소 API-->
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script>
+//주소 API 호출 함수
+function fn_setAddr() {
+	var width = 700;
+	var height = 900;
+	daum.postcode.load(function(){
+		new daum.Postcode({
+			oncomplete: function(data) {
+				$("#zipcode").val(data.zonecode);
+				$("#address1").val(data.address);
+				$("#address2").val(data.buildingName);
+			}
+		}).open({
+			left: (window.screen.width / 2) - (width / 2),
+			top: (window.screen.height / 2) - (height / 2)
+		});
+	});
+}
+
+
+//ID 중복체크
+var check_id = false;
+
+function id_check() {
+	check_id = true;
+	var current_id = $("#id").val();
+	var popup_url = "/User/ID_Check/?id=" + current_id;
+
+	var X = (window.screen.width / 2) - (350 / 2);
+	var Y = (window.screen.height / 2) - (250 / 2);
+
+	F_length = current_id.length;
+	tmp_str = current_id.replace(/[^a-zA-Z0-9]/g,'');
+	S_length = tmp_str.length;
+
+	if(F_length < 4 || F_length > 10)
+	{
+		alert("ID는 4글자 이상, 10글자 이하여야 합니다.");
+		$("#id").val("");
+		return;
+	}
+	if(F_length != S_length)
+	{
+		alert("ID는 영 소문자와 숫자로 이루어져야 합니다.");
+		$("#id").val("");
+		return;
+	}
+	else {
+		window.open(popup_url, "아이디 중복확인", "width = 350, height = 250, left = "+X+", top = "+Y+", status = no, scrollbars = no, resizable = no");
+	}
+}
+
+//비밀번호 확인
+function pw_check(){
+	var PW = $("#pw").val();
+	var PWC = $("#pw_check").val();
+
+	if(PW !='' && PWC !=''){
+		if(PW == PWC)
+		{
+			if(PW.length < 8 || PWC.length < 8)
+			{
+				document.getElementById('same').innerHTML = '비밀번호는 8글자 이상이어야 합니다.';
+				document.getElementById('same').style.color = 'red';
+			}
+			else
+			{
+				document.getElementById('same').innerHTML = '비밀번호 입력이 일치합니다.';
+				document.getElementById('same').style.color = 'blue';
+			}
+		}
+		else
+		{
+			document.getElementById('same').innerHTML = '비밀번호 입력이 일치하지 않습니다.';
+			document.getElementById('same').style.color = 'red';
+		}
+	}
+}
+</script>

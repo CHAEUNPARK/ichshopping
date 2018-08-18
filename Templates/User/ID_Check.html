@@ -1,0 +1,127 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<title>아이디 중복체크</title>
+<script>
+
+
+function send(userid) {
+	var new_id = $("#newid").val();
+	if ({{checked}} == 0)
+	{
+		opener.$("#idcheck").val("yes");
+		opener.$("#id").val("{{userid}}");
+	}
+	window.close();
+}
+
+function new_check() {
+	var new_id = $("#newid").val();	
+	F_length = new_id.length;
+	tmp_str = new_id.replace(/[^a-zA-Z0-9]/g,'');
+	S_length = tmp_str.length;
+
+	
+	if (new_id == ""){
+		alert("ID를 입력해 주세요.");
+		return;
+	}
+	if (F_length < 4 || F_length > 10){
+		alert("ID는 4글자 이상 10글자 이하여야 합니다.");
+		$("#newid").val("");
+		return;
+	}
+	if (F_length != S_length){
+		alert("ID는 영 소문자와 숫자로 이루어져야 합니다.");
+		$("#newid").val("");
+		return;
+	}
+	else{
+		location.href="/User/ID_Check/?id=" + new_id;
+	}
+}
+
+function Enterdown() {
+	if (window.event.keyCode == 13)
+	{
+		new_check();
+	}
+}
+
+</script>
+<style>
+
+.popup_container {
+	width: 300px;
+	height: 200px;
+	
+}
+
+.popup_top {
+	width: 100%;
+	height: 61px;
+}
+
+.top_img {
+	height: 61px;
+	width: auto;
+	max-width: 100%;
+}
+
+.popup_mid {
+	margin-top:10px;
+	text-align:center;
+}
+
+.btn_submit {
+	margin-top:20px;
+	cursor: pointer;
+}
+.id_search {
+	height: 22px;
+	width: auto;
+	max-width: 100%;
+	position: relative;
+	top: 5px;
+	cursor: pointer;
+}
+{% if checked == 0 %}
+.txt_id {
+	color: blue;
+}
+{% else %}
+.txt_id {
+	color: red;
+}
+{% endif %}
+</style>
+</head>
+<body>
+<div class="popup_container">
+	<div class="popup_mid">
+		{% if checked == 0 %}
+		<div class="check_text">
+			입력하신 아이디<br>
+			<strong class="txt_id">{{userid}}</strong>는(은)<br>
+			사용 가능합니다.
+		</div>
+		<a href="javascript:send('{{userid}}')">
+			<img src="/Static/User/submit_button.gif" class="btn_submit"/>
+		</a>
+		{% else %}
+		<div class="check_text">
+			입력하신 아이디<br>
+			<strong class="txt_id">{{userid}}</strong>는(은)<br>
+			사용 불가능합니다.<br>
+			<input type="text" size="10" name="newid" id="newid" onkeyup="Enterdown()" placeholder="ID 재검색"/>
+			<a onclick="new_check()">
+				<img class="id_search"src="/Static/User/search.gif"/>
+			</a>
+		</div>
+		{% endif %}
+		
+		
+	</div>
+</div>
+</body>
